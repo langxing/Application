@@ -38,7 +38,6 @@ public abstract class QuickAdapter<T> extends Adapter<QuickHolder> {
         this.spanSize = spanSize;
     }
 
-    private SparseArray<Integer> rIds = new SparseArray<>();
     public QuickAdapter(List<T> list, Context context, @LayoutRes int layoutId, LayoutManager layoutManager) {
         this.mList = list;
         this.mContext = context;
@@ -121,17 +120,13 @@ public abstract class QuickAdapter<T> extends Adapter<QuickHolder> {
             view = LayoutInflater.from(mContext).inflate(commonLayoutId, parent, false);
             layoutId = commonLayoutId;
         }
-        //有header
-        if(viewType == TYPE_HEADER && headerId > 0) {
+        if(viewType == TYPE_HEADER && headerId > 0) {//有header
             view = LayoutInflater.from(mContext).inflate(headerId, parent, false);
             layoutId = headerId;
-        }
-        //有footer
-        if (viewType == TYPE_FOOTER && footerId > 0) {
+        }else if (viewType == TYPE_FOOTER && footerId > 0) {//有footer
             view = LayoutInflater.from(mContext).inflate(footerId, parent, false);
             layoutId = footerId;
         }
-        rIds.put(viewType, layoutId);
         if(mOnItemClickListener != null){
             return new QuickHolder(view, mOnItemClickListener, layoutId, commonLayoutId, mContext);
         } else {
