@@ -1,11 +1,13 @@
 package com.adapter.library;
 
+import android.content.Context;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,6 +20,7 @@ public class QuickHolder extends RecyclerView.ViewHolder {
     private QuickAdapter.OnItemClickListener mOnItemClickListener;
     private SparseArray<View> itemViews = new SparseArray<>();
     private SparseArray<View> views = new SparseArray<>();
+    private Context mContext;
     private int commonLayoutId;
     public <T extends View> T findView(@IdRes @NonNull int id) {
         T t = (T) views.get(id);
@@ -40,10 +43,11 @@ public class QuickHolder extends RecyclerView.ViewHolder {
        return t;
     }
 
-    public QuickHolder(final View itemView, QuickAdapter.OnItemClickListener onItemClickListener, @LayoutRes int rId, @LayoutRes int cId) {
+    public QuickHolder(final View itemView, QuickAdapter.OnItemClickListener onItemClickListener, @LayoutRes int rId, @LayoutRes int cId, Context context) {
         super(itemView);
         this.mOnItemClickListener = onItemClickListener;
         commonLayoutId = cId;
+        mContext = context;
         itemViews.put(rId, itemView);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +74,12 @@ public class QuickHolder extends RecyclerView.ViewHolder {
     public QuickHolder setText(@IdRes int id, @LayoutRes int layoutId, String text) {
         TextView textView = (TextView) views.get(id);
         if(textView == null) {
-            textView = (TextView) getItemView(layoutId).findViewById(id);
+            View view = getItemView(layoutId);
+            if(view == null) {
+                view = LayoutInflater.from(mContext).inflate(layoutId, null);
+                itemViews.put(layoutId, view);
+            }
+            textView = (TextView) view.findViewById(id);
             views.put(id, textView);
         }
         textView.setText(text);

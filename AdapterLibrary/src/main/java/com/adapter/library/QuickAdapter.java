@@ -25,6 +25,7 @@ public abstract class QuickAdapter<T> extends Adapter<QuickHolder> {
     private int headerId = 0,footerId = 0;
     public static final int TYPE_HEADER = 1;
     public static final int TYPE_FOOTER = 2;
+    public static final int TYPE_COMMON = 3;
     private GridLayoutManager mGridLayoutManager;
     private OnItemClickListener mOnItemClickListener;
     private int spanSize = 0;
@@ -132,9 +133,9 @@ public abstract class QuickAdapter<T> extends Adapter<QuickHolder> {
         }
         rIds.put(viewType, layoutId);
         if(mOnItemClickListener != null){
-            return new QuickHolder(view, mOnItemClickListener, layoutId, commonLayoutId);
+            return new QuickHolder(view, mOnItemClickListener, layoutId, commonLayoutId, mContext);
         } else {
-            return new QuickHolder(view, null, layoutId, commonLayoutId);
+            return new QuickHolder(view, null, layoutId, commonLayoutId, mContext);
         }
     }
 
@@ -190,6 +191,7 @@ public abstract class QuickAdapter<T> extends Adapter<QuickHolder> {
 
     }
 
+    //返回不同类型
     @Override
     public int getItemViewType(int position) {
         if(headerId > 0 && position < 1) {
@@ -207,7 +209,7 @@ public abstract class QuickAdapter<T> extends Adapter<QuickHolder> {
      * @return
      */
     public int getViewType(int position) {
-        return commonLayoutId;
+        return TYPE_COMMON;
     }
 
     /**
@@ -216,12 +218,7 @@ public abstract class QuickAdapter<T> extends Adapter<QuickHolder> {
      * @return layoutId
      */
     public int getItemViewId(int viewType) {
-        if(viewType == TYPE_HEADER) {
-            return headerId;
-        } else if(viewType == TYPE_FOOTER) {
-            return footerId;
-        }
-        return commonLayoutId;
+        return 0;
     }
 
     public interface OnItemClickListener{
