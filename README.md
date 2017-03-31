@@ -65,3 +65,5 @@ holder.setText(R.id.top_tv, R.layout.layout_test, user.getName()).setImage(R.id.
 4.gridLayoutManager情况下，默认头布局和尾布局占据整行（需要传递gridLayoutManager到适配器中）
 5.view通过sparseArray进行缓存，最大程度的节约内存
 6.支持item点击事件
+
+｛ 注意，由于id和控件映射缓存，所以不要出现id相同的情况｝
